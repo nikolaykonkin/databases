@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# Логи и временные файлы
+*.log
+*.tmp
+*.bak
+
+# Terraform (если когда-нибудь добавится)
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Docker
+docker-compose.override.yml
+
+# Python (на всякий случай)
+__pycache__/
+*.pyc
+
+# Node (на всякий случай)
+node_modules/
