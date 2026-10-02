@@ -1,10 +1,12 @@
 # SQL Optimization: EXPLAIN ANALYZE and Indexes
 
-Анализ производительности SQL-запросов на PostgreSQL: работа с EXPLAIN ANALYZE, выявление узких мест, оптимизация запросов, обзор типов индексов PostgreSQL vs MySQL.
+Анализ производительности SQL-запросов на MySQL и базе sakila: работа с EXPLAIN ANALYZE, выявление узких мест, оптимизация запросов, обзор типов индексов PostgreSQL vs MySQL.
 
 ## Исходные данные
 
-Задание выполняется на учебной базе данных sakila, развернутой в PostgreSQL. Используемые таблицы: `payment`, `rental`, `customer`, `inventory`, `film`.
+Задание выполняется на учебной базе данных sakila в MySQL. Используемые таблицы: `payment`, `rental`, `customer`, `inventory`, `film`.
+
+Запрос из задачи 1 использует MySQL-специфичные колонки `information_schema.tables.data_length` и `index_length`; в PostgreSQL размеры таблиц и индексов получают через `pg_relation_size` и `pg_indexes_size`.
 
 Полная постановка задачи — в [task.md](task.md).
 

@@ -8,7 +8,7 @@
 |---|---|---|
 | [01-schema-design](01-schema-design/) | Проектирование схемы БД в 3НФ на основе плоского Excel-отчета | PostgreSQL, PL/pgSQL |
 | [02-sql-practice](02-sql-practice/) | Практика SQL: администрирование, SELECT, JOIN, агрегация | MySQL 8.0, Docker, sakila |
-| [03-optimization](03-optimization/) | EXPLAIN ANALYZE, оптимизация запросов, индексы | PostgreSQL |
+| [03-optimization](03-optimization/) | EXPLAIN ANALYZE, оптимизация запросов, индексы | MySQL 8.0 (sakila) |
 | [04-replication](04-replication/) | Master-Slave и Master-Master репликация | MySQL 8.0, Docker |
 | [05-sharding](05-sharding/) | Вертикальный и горизонтальный шардинг | MySQL 8.0, Docker |
 | [06-backup](06-backup/) | Стратегии резервного копирования, PITR, pg_dump, binlog | PostgreSQL, MySQL |
@@ -19,10 +19,10 @@
 - **Проектирование схемы.** Плоский Excel-отчет разбит на 7 таблиц в 3НФ: `Employees`, `Positions`, `Departments`, `DepartmentTypes`, `Branches`, `Projects`, `EmployeeProjects`. Индексы на FK и `hire_date`, триггеры на `updated_at`, представление `EmployeeReport` через `STRING_AGG`, PL/pgSQL-функция загрузки данных.
 - **Администрирование MySQL.** Развертывание в Docker, управление пользователями и правами (`CREATE USER`, `GRANT`, `REVOKE`), работа с `INFORMATION_SCHEMA`, восстановление дампа sakila.
 - **SQL-запросы.** Базовые SELECT, фильтрация (LIKE, BETWEEN), сортировка, строковые функции (`SUBSTRING_INDEX`, `CONCAT`, `UPPER`, `LEFT`, `REPLACE`, `LOWER`), многотабличные JOIN, агрегация (`COUNT`, `SUM`, `AVG`), `GROUP BY` + `HAVING`, подзапросы, `CASE`, поиск записей без связанных данных через `LEFT JOIN ... IS NULL`.
-- **Оптимизация.** Чтение плана запроса через EXPLAIN ANALYZE, выявление узких мест (функции на индексированных полях, устаревший синтаксис JOIN, неоптимальные условия соединений), переписывание запроса и добавление индексов. Обзор типов индексов PostgreSQL vs MySQL (GiST, SP-GiST, GIN, BRIN, partial indexes).
+- **Оптимизация.** Чтение плана запроса через EXPLAIN ANALYZE на MySQL и базе sakila: выявление узких мест (функции на индексированных полях, устаревший синтаксис JOIN, неоптимальные условия соединений), переписывание запроса и добавление индексов. Теоретический обзор типов индексов PostgreSQL, отсутствующих в MySQL (GiST, SP-GiST, GIN, BRIN, partial indexes).
 - **Репликация.** Master-Slave и Master-Master на MySQL 8.0 в Docker: binlog-репликация, `CHANGE MASTER TO`, чтение `SHOW MASTER STATUS` и `SHOW SLAVE STATUS`, проверка через тестовые данные.
 - **Шардинг.** Вертикальный (по столбцам) и горизонтальный (по строкам) шардинг: выбор ключа, Mermaid-схема архитектуры, реализация на Docker с логикой маршрутизации.
-- **Резервное копирование.** Сценарии бэкапа для финансовой компании (полный, инкрементный, PITR, мгновенное переключение через репликацию), команды `pg_dump`/`pg_restore`, `mysqldump --single-transaction --master-data`, работа с binlog через `mysqlbinlog`, автоматизация через cron и pgBackRest.
+- **Резервное копирование.** Разбор сценариев бэкапа для финансовой компании (полный, инкрементный, PITR, мгновенное переключение через репликацию). Разобраны команды `pg_dump`/`pg_restore`, `mysqldump --single-transaction --master-data`, работа с binlog через `mysqlbinlog`, автоматизация через cron и pgBackRest. Практическая реализация не выполнялась — раздел носит характер разбора подходов и команд.
 - **Managed PostgreSQL.** Кластер Yandex Cloud с хостами в двух зонах доступности, подключение через `psql` с SSL, проверка репликации через `pg_is_in_recovery()`, `pg_stat_replication`, `pg_stat_wal_receiver`.
 
 ## Стек
@@ -41,7 +41,7 @@
 - `02-sql-practice/` — MySQL 8.0 в Docker + база sakila.
 - `03-optimization/` — PostgreSQL + sakila.
 - `04-replication/`, `05-sharding/` — MySQL 8.0 в Docker, несколько контейнеров.
-- `06-backup/` — теоретическая часть + команды из документации.
+- `06-backup/` — разбор сценариев и команд бэкапа (только README).
 - `07-cloud-databases/` — Yandex Cloud, консоль + psql.
 
 ## Что освоено
@@ -55,7 +55,7 @@
 - Репликация: binlog в MySQL, физическая репликация PostgreSQL, разница между Master-Slave и Master-Master.
 - Шардинг: выбор ключа, вертикальное и горизонтальное разделение, маршрутизация на уровне приложения.
 - Облачные БД: managed-кластер, зоны доступности, SSL, репликация между зонами.
-- Резервное копирование: полное, инкрементное, PITR, работа с WAL и binlog, автоматизация.
+- Резервное копирование: понимание полного, инкрементного и дифференциального бэкапа, PITR через WAL и binlog, автоматизация через cron, pgBackRest и Barman.
 
 ## Границы проекта
 
